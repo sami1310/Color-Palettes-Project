@@ -3,6 +3,12 @@ from .models import Palette
 from rest_framework.response import Response
 from .serializers import PaletteSerializer
 from django.db.models import Q
+from django.shortcuts import render
+
+
+def palette_list_view(request):
+    palettes = Palette.objects.filter(is_public=True)
+    return render(request, "palette_list.html", {"palettes": palettes})
 
 
 class PaletteListView(generics.ListCreateAPIView):

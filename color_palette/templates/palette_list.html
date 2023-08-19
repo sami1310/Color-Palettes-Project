@@ -1,0 +1,32 @@
+
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Color Palettes</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search by palette name or color...">
+        <button id="search-btn">Search</button>
+    </div>
+    <div class="palettes">
+        {% for palette in palettes %}
+            <div class="palette">
+                <h3>{{ palette.name }}</h3>
+                <div class="colors">
+                    {% for color in palette.dominant_colors %}
+                        <div class="color-box" style="background-color: {{ color.hex }}"></div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+
