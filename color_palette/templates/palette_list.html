@@ -16,6 +16,9 @@
         <button id="search-btn">Search</button>
     </div>
     <div class="palettes">
+        <!-- JavaScript will populate this div -->
+    </div>
+    <div class="palettes">
         {% for palette in palettes %}
             <div class="palette">
                 <h3>{{ palette.name }}</h3>
@@ -27,6 +30,8 @@
             </div>
         {% endfor %}
     </div>
+
+    <script src="{% static 'js/scripts.js' %}"></script>
 </body>
 </html>
 
