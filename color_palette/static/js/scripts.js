@@ -119,9 +119,42 @@ function showPaletteCreationForm() {
         <input type="text" id="accent-colors" placeholder="Accent Colors (comma-separated)">
         <button type="submit">Create Palette</button>
     `;
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const paletteName = document.getElementById('palette-name').value;
+        const dominantColors = document.getElementById('dominant-colors').value.split(',');
+        const accentColors = document.getElementById('accent-colors').value.split(',');
+        const csrfToken = getCookie('csrftoken');
+        const userId = localStorage.getItem('userId');
+
+        fetch('/create_palette/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({
+                name: paletteName,
+                dominant_colors: dominantColors,
+                accent_colors: accentColors,
+                user: userId
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert('Palette created successfully!');
+                fetchPalettes('');
+            })
+            .catch(error => {
+                console.error('Error creating palette:', error);
+                alert('Failed to create palette. Please try again.');
+            });
+    });
 
     document.body.appendChild(form);
 }
+
 
 function fetchPalettes(query) {
     fetch(`/palettes/?search=${query}`)

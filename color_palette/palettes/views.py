@@ -57,3 +57,19 @@ def login_view(request):
         return Response(
             {"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST
         )
+
+
+@api_view(["POST"])
+def create_palette_view(request):
+    if request.method == "POST":
+        serializer = PaletteSerializer(data=request.data)
+        if serializer.is_valid():
+            # Associate the palette with the currently logged-in user
+            palette = serializer.save()
+            palette.user = request.user
+            palette.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        if not serializer.is_valid():
+            print(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
